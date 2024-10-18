@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Stock Price Checker</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Stock Price Checker</h1>
+        <form method="POST">
+            <div class="input-group">
+                <input type="text" name="symbol" placeholder="Enter stock symbol (e.g., AAPL)" required>
+                <button type="submit">Check Price</button>
+            </div>
+        </form>
+        
+        {% if price %}
+            <div class="alert alert-info mt-3" role="alert">
+                {% if price.startswith("Failed") %}
+                    <strong>Error:</strong> {{ price }}
+                {% else %}
+                    <strong>Stock Price:</strong> ${{ price }}
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if historical_prices is not none %}
+        <h3>Historical Prices</h3>
+        <img src="{{ url_for('static', filename='historical_prices.png') }}" alt="Historical Prices Plot" />
+    {% else %}
+        <div class="alert alert-warning mt-3" role="alert">
+            <strong>Warning:</strong> {{ historical_prices }}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
